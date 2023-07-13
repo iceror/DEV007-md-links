@@ -4,6 +4,19 @@
   "engines": {
     "node": ">=16.x"
   },
+  "author": "Ilse Cervantes",
+  "homepage": "https://github.com/iceror/DEV007-md-links",
+  "license": "ISC",
+  "main": "index.js",
+  "description": "CLI tool that reads and analyzes files in .md format. It verifies the links contained in said files and returns stats about them",
+  "keywords": [
+    "CLI",
+    "md",
+    "links",
+    "files",
+    "stats",
+    "validate"
+  ],
   "bootcamp": {
     "createdAt": "2023-06-20T14:05:58.211Z",
     "version": "6.3.0",
