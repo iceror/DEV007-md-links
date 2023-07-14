@@ -21,11 +21,14 @@
   ],
   "author": "Ilse Cervantes",
   "license": "ISC",
-  "bin":{
+  "bin": {
     "md-links": "./bin/index.js"
   },
   "bugs": {
     "url": "https://github.com/iceror/DEV007-md-links/issues"
   },
-  "homepage": "https://github.com/iceror/DEV007-md-links#readme"
+  "homepage": "https://github.com/iceror/DEV007-md-links#readme",
+  "dependencies": {
+    "chalk": "^4.1.2"
+  }
 }

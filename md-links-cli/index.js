@@ -1,5 +1,8 @@
 #!/usr/bin/env node
-console.log('hello');
+const chalk = require("chalk")
+
+console.log(chalk.magenta('init chalk'));
+console.log(chalk.red('hello'));
 // CommonJS Modules require/module.exports 
 module.exports = () => {
   // ...
