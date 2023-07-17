@@ -4,7 +4,7 @@
   "description": "CLI tool that reads and analyzes files in .md format. It verifies the links contained in said files and returns stats about them",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -30,5 +30,8 @@
   "homepage": "https://github.com/iceror/DEV007-md-links#readme",
   "dependencies": {
     "chalk": "^4.1.2"
+  },
+  "devDependencies": {
+    "jest": "^29.6.1"
   }
 }
