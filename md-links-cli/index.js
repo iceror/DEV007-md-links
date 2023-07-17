@@ -1,16 +1,21 @@
 #!/usr/bin/env node
-const chalk = require("chalk")
+// CommonJS Modules require/module.exports 
 
+const fs = require('fs')
+const chalk = require("chalk")
 console.log(chalk.magenta('init chalk'));
 console.log(chalk.red('hello'));
-// CommonJS Modules require/module.exports 
+
 const mdLinks = (path, options) => {
   // mdLinks debe retornar una promesa
-  const mdLinksPromise = new Promise((resolve, reject) => {
-
-  })
-  return mdLinksPromise
+  return new Promise((resolve, reject) => {
+    // mdLinks should check if the path exists. if it doesn't exists, reject Promise
+    if (fs.existsSync(path)) {
+      console.log('The path exists!');
+    } else {
+      reject('ERROR path is not valid');
+    }
+  });
 }
-module.exports = () => {
-  // ...
-};
+
+module.exports = mdLinks 
