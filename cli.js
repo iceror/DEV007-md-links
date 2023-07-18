@@ -6,7 +6,7 @@ mdLinks('md-links-cli/index.js').then(() => {
   console.log(error);
 })
 
-mdLinks('/Users/ilsecervantes/Documents/GitHub/DEV007-md-links/mock-files/mock.js').then(() => {
+mdLinks('/Users/ilsecervantes/Documents/GitHub/DEV007-md-links/mock-files').then(() => {
 
 }).catch((error) => {
   console.log(error);
@@ -18,14 +18,14 @@ mdLinks('mock-files/mock.md').then(() => {
   console.log(error);
 });
 
-mdLinks('mock-files/mock.json').then(() => {
+// mdLinks('mock-files/mock.json').then(() => {
 
-}).catch((error) => {
-  console.log(error);
-});
+// }).catch((error) => {
+//   console.log(error);
+// });
 
-mdLinks('/Users/ilsecervantes/Documents/GitHub/DEV007-md-links/mock-files/another-mock.md').then(() => {
+// mdLinks('/Users/ilsecervantes/Documents/GitHub/DEV007-md-links/mock-files/another-mock.md').then(() => {
 
-}).catch((error) => {
-  console.log(error);
-});
+// }).catch((error) => {
+//   console.log(error);
+// });
