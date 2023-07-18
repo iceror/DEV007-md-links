@@ -8,7 +8,7 @@ const chalk = require("chalk")
 const mdLinks = (givenPath, options) => {
   // mdLinks debe retornar una promesa
   return new Promise((resolve, reject) => {
-    // Verify if path is absolute, if relative, make it absolute
+    // Verify if path is absolute. if relative, make it absolute
     let absolutePath;
     if (path.isAbsolute(givenPath)) {
       absolutePath = givenPath;
@@ -19,15 +19,32 @@ const mdLinks = (givenPath, options) => {
     }
 
     // mdLinks should check if the path exists. if it doesn't exists, reject Promise
+    let existingPath
     if (fs.existsSync(absolutePath)) {
-      console.log(chalk.greenBright('Path exists!!!', absolutePath));
+      existingPath = absolutePath
+      console.log(chalk.greenBright('Path exists!', absolutePath));
     } else {
-      console.log(chalk.red('ERROR path is not valid', absolutePath));
+      reject(chalk.red('ERROR path does not exist!', absolutePath));
+    }
+
+    // check if path is directory 
+    let stats = fs.statSync(existingPath)
+    if (stats.isDirectory()) {
+      let directoryPath = existingPath
+      console.log(chalk.bgGreenBright('Path is directory', directoryPath));
+      // read files inside directory
+      const filesInDirectory = fs.readdirSync(directoryPath)
+      console.log(filesInDirectory);
+      // if it finds more directories, read files 
+      
+    } else {
+      existingPath
+      console.log(chalk.bgRedBright('Path is not directory', existingPath));
     }
 
     let mdFilesArray = [];
     // get file extension
-    if (path.extname(absolutePath) === '.md') {
+    if (path.extname(existingPath) === '.md') {
       mdFilesArray.push(absolutePath);
       console.log(chalk.greenBright('extension is .MD'));
     } else {
@@ -35,10 +52,6 @@ const mdLinks = (givenPath, options) => {
     }
 
     console.log(mdFilesArray);
-
-
-
-
     // resolve devolver un array con el archivo
 
   });
