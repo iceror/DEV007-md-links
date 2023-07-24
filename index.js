@@ -14,6 +14,9 @@ const mdLinks = (givenPath, options) => {
     // mdLinks should check if the path exists. if it doesn't exists, reject Promise
     let existingPath = pathExists(absolutePath);
 
+    if (!existingPath) {
+      reject(chalk.bgRed('ERROR path does not exist '))
+    }
     // check if path is directory 
     let directoryPath = pathIsDirectory(existingPath);
     // check if path is file
@@ -54,7 +57,8 @@ function pathExists(absolutePath) {
     existingPath = absolutePath;
     console.log(chalk.bgGreen('Path exists!', chalk.underline(absolutePath)));
   } else {
-    console.log((chalk.bgRed('ERROR path does not exist!', chalk.strikethrough(absolutePath))));
+    //console.log((chalk.bgRed('ERROR path does not exist!', chalk.strikethrough(absolutePath))));
+    return false
   }
   return existingPath;
 }
