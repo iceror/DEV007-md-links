@@ -22,7 +22,7 @@
   "author": "Ilse Cervantes",
   "license": "ISC",
   "bin": {
-    "md-links": "./bin/index.js"
+    "md-links": "./cli.js"
   },
   "bugs": {
     "url": "https://github.com/iceror/DEV007-md-links/issues"
