@@ -117,9 +117,12 @@ function getFileExtension(filePath) {
 }
 
 function readMdFiles(mdFilesArray) {
+  let contentArray = [];
   mdFilesArray.forEach((mdFile) => {
-    console.log(chalk.cyanBright(fs.readFileSync(mdFile, { encoding: 'utf8', flag: 'r' })))
+    let content = fs.readFileSync(mdFile, { encoding: 'utf8', flag: 'r' });
+    contentArray.push(content);
   })
+  console.log(chalk.cyanBright(contentArray))
 }
 
 
