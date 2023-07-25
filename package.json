@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/iceror/DEV007-md-links#readme",
   "dependencies": {
+    "axios": "^1.4.0",
     "chalk": "^4.1.2"
   },
   "devDependencies": {
