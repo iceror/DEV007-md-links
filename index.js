@@ -24,16 +24,18 @@ const mdLinks = (givenPath, options) => {
     let filePath = pathIsFile(existingPath);
 
     let mdFilesArray = [];
+    let contentArray = [];
     if (filePath) {
       mdFilesArray.push(getFileExtension(filePath));
-      // console.log('inside if',mdFilesArray);
-      readMdFiles(mdFilesArray);
+      contentArray = readMdFiles(mdFilesArray);
     } else if (directoryPath) {
       mdFilesArray = getFilesInDirectory(directoryPath);
-      readMdFiles(mdFilesArray)
+      contentArray = readMdFiles(mdFilesArray)
     }
-    // resolve devolver un array con el archivo
 
+    console.log(chalk.blueBright.bold(contentArray));
+    // resolve devolver un array con el archivo
+    getLinks(contentArray)
   });
 }
 
@@ -77,7 +79,6 @@ function getFilesInDirectory(directoryPath) {
 
   // Find subdirectories
   let mdFilesArray = []
-
   filesInDirectory.forEach((file) => {
     const filePath = directoryPath + '/' + file;
     // const notMdFilesArray = []
@@ -91,7 +92,7 @@ function getFilesInDirectory(directoryPath) {
       mdFilesArray = mdFilesArray.concat(mdFilesInSubdirectory);
     }
   })
-  console.log('outside if', mdFilesArray);
+  // console.log('outside if', mdFilesArray);
   return mdFilesArray;
 }
 
@@ -122,8 +123,26 @@ function readMdFiles(mdFilesArray) {
     let content = fs.readFileSync(mdFile, { encoding: 'utf8', flag: 'r' });
     contentArray.push(content);
   })
-  console.log(chalk.cyanBright(contentArray))
+  return contentArray;
 }
 
+function getLinks(contentArray) {
+  const linkRegex = /\[([^\]]+)\](\S+)/g; // Modified regex for link without parentheses
+  const links = [];
 
-module.exports = mdLinks 
+  for (const content of contentArray) {
+    let match;
+    while ((match = linkRegex.exec(content)) !== null) {
+      const linkText = match[1];
+      const linkURL = match[2];
+      links.push({ text: linkText, url: linkURL });
+    }
+  }
+
+    console.log(links);
+    return links;
+  }
+
+
+
+  module.exports = mdLinks 
