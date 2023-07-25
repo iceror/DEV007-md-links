@@ -1,9 +1,8 @@
-#!/usr/bin/env node
 // CommonJS Modules require/module.exports 
-const fs = require('fs')
-const path = require('path')
+const fs = require('fs');
+const path = require('path');
 const chalk = require("chalk");
-const { dir } = require('console');
+const axios = require('axios');
 
 //console.log(process.argv);
 const mdLinks = (givenPath, options) => {
@@ -33,9 +32,9 @@ const mdLinks = (givenPath, options) => {
       contentArray = readMdFiles(mdFilesArray)
     }
 
-
     // resolve devolver un array con el archivo
-    getLinks(contentArray)
+    const links = getLinks(contentArray);
+    validateLinks(links);
   });
 }
 
@@ -121,7 +120,7 @@ function readMdFiles(mdFilesArray) {
   let contentArray = [];
   mdFilesArray.forEach((mdFile) => {
     let content = fs.readFileSync(mdFile, { encoding: 'utf8', flag: 'r' });
-    contentArray.push({content, filePath: mdFile});
+    contentArray.push({ content, filePath: mdFile });
   })
   console.log(contentArray);
   return contentArray;
@@ -140,10 +139,44 @@ function getLinks(contentArray) {
     }
   }
 
-    console.log('Links:',links);
-    return links;
-  }
+  console.log('Links:', links);
+  return links;
+}
 
+function validateLinks(links){
+  const promises = links.map((link) => {
+    return axios
+    .get(link.href)
+    .then((response) => {
+      const isValid = response.status >= 200 && response.status < 400;
+      console.log({
+        ...link,
+        status: response.status,
+        ok: isValid ? 'ok' : 'fail'
+      });
+      return {
+        ...link,
+        status: response.status,
+        ok: 'ok'
+      }
+    })
+    .catch((error) => {
+      console.log('ERROR', error.response);
+      if (error.response){
+        console.log(
+          {
+            ...link,
+            status: error.response.status
+          }
+        );
+        return {
+          ...link,
+          status: error.response.status
+        }
+      }
+    });
+  });
+  return Promise.all(promises)
+}
 
-
-  module.exports = mdLinks 
+module.exports = mdLinks 
