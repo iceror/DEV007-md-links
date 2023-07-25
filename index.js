@@ -2,7 +2,8 @@
 // CommonJS Modules require/module.exports 
 const fs = require('fs')
 const path = require('path')
-const chalk = require("chalk")
+const chalk = require("chalk");
+const { dir } = require('console');
 
 //console.log(process.argv);
 const mdLinks = (givenPath, options) => {
@@ -22,18 +23,15 @@ const mdLinks = (givenPath, options) => {
     // check if path is file
     let filePath = pathIsFile(existingPath);
 
-    let mdFilesArray;
+    let mdFilesArray = [];
     if (filePath) {
-      mdFilesArray = getFileExtension(filePath);
-      readMdFiles(mdFilesArray)
+      mdFilesArray.push(getFileExtension(filePath));
+      // console.log('inside if',mdFilesArray);
+      readMdFiles(mdFilesArray);
     } else if (directoryPath) {
-      getFilesInDirectory(directoryPath);
+      mdFilesArray = getFilesInDirectory(directoryPath);
+      readMdFiles(mdFilesArray)
     }
-
-
-
-    console.log('INSIDE CLOG', directoryPath, filePath);
-
     // resolve devolver un array con el archivo
 
   });
@@ -77,23 +75,32 @@ function getFilesInDirectory(directoryPath) {
   const filesInDirectory = fs.readdirSync(directoryPath)
   console.log('Found this files in directory: ', filesInDirectory);
 
-  // if it finds more directories, read files 
-  filesInDirectory.map((file => {
-    let fileExtension = getFileExtension(file);
-    if(!fileExtension){
-      // let notMdFile = pathIsFile(file)
-      console.log('not md');
+  // Find subdirectories
+  const mdFilesArray = []
+
+  filesInDirectory.map((file) => {
+    const filePath = directoryPath + '/' + file;
+
+    // const notMdFilesArray = []
+    if (pathIsFile(filePath)) {
+      const extension = getFileExtension(filePath)
+      if (extension) {
+        mdFilesArray.push(filePath);
+      }
+    } else if (pathIsDirectory(filePath)) {
+      getFilesInDirectory(filePath)
     }
-    // getFilesInDirectory(file)
-  })) 
-  // iterate inside filesInDirectory and get .md files 
+  })
+
+  console.log('outside if', mdFilesArray);
+  return mdFilesArray
 }
 
 function pathIsFile(existingPath) {
   let stats = fs.statSync(existingPath);
   if (stats.isFile()) {
     let filePath = existingPath;
-    console.log(chalk.redBright('Path is not directory:', filePath));
+    // console.log(chalk.redBright('Path is not directory:', filePath));
     //función para obtener extensión
     // getFileExtension(filePath);
     return filePath;
@@ -101,14 +108,12 @@ function pathIsFile(existingPath) {
 }
 
 function getFileExtension(filePath) {
-  let mdFilesArray = [];
   if (path.extname(filePath) === '.md') {
-    mdFilesArray.push(filePath);
-    console.log(chalk.greenBright('File extension is .MD'));
-    console.log(mdFilesArray);
-    return mdFilesArray
+    console.log(chalk.greenBright('File extension is .MD', filePath));
+    return filePath;
   } else {
     console.log(chalk.redBright('File extension is not .MD', filePath));
+    return false;
   }
 }
 
