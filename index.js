@@ -35,7 +35,7 @@ const mdLinks = (givenPath, options) => {
 
 
     // resolve devolver un array con el archivo
-    getLinks(contentArray, filePath)
+    getLinks(contentArray)
   });
 }
 
@@ -127,7 +127,7 @@ function readMdFiles(mdFilesArray) {
   return contentArray;
 }
 
-function getLinks(contentArray, filePath) {
+function getLinks(contentArray) {
   const linkRegex = /\[([^\]]+)\](\S+)/g; // Modified regex for link without parentheses
   const links = [];
 
@@ -140,7 +140,7 @@ function getLinks(contentArray, filePath) {
     }
   }
 
-    console.log(links);
+    console.log('Links:',links);
     return links;
   }
 
