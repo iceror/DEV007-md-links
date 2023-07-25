@@ -76,24 +76,23 @@ function getFilesInDirectory(directoryPath) {
   console.log('Found this files in directory: ', filesInDirectory);
 
   // Find subdirectories
-  const mdFilesArray = []
+  let mdFilesArray = []
 
-  filesInDirectory.map((file) => {
+  filesInDirectory.forEach((file) => {
     const filePath = directoryPath + '/' + file;
-
     // const notMdFilesArray = []
     if (pathIsFile(filePath)) {
-      const extension = getFileExtension(filePath)
+      const extension = getFileExtension(filePath);
       if (extension) {
         mdFilesArray.push(filePath);
       }
     } else if (pathIsDirectory(filePath)) {
-      getFilesInDirectory(filePath)
+      const mdFilesInSubdirectory = getFilesInDirectory(filePath);
+      mdFilesArray = mdFilesArray.concat(mdFilesInSubdirectory);
     }
   })
-
   console.log('outside if', mdFilesArray);
-  return mdFilesArray
+  return mdFilesArray;
 }
 
 function pathIsFile(existingPath) {
@@ -119,7 +118,7 @@ function getFileExtension(filePath) {
 
 function readMdFiles(mdFilesArray) {
   mdFilesArray.forEach((mdFile) => {
-    console.log(fs.readFileSync(mdFile, { encoding: 'utf8', flag: 'r' }))
+    console.log(chalk.cyanBright(fs.readFileSync(mdFile, { encoding: 'utf8', flag: 'r' })))
   })
 }
 
