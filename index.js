@@ -33,9 +33,9 @@ const mdLinks = (givenPath, options) => {
       contentArray = readMdFiles(mdFilesArray)
     }
 
-    console.log(chalk.blueBright.bold(contentArray));
+
     // resolve devolver un array con el archivo
-    getLinks(contentArray)
+    getLinks(contentArray, filePath)
   });
 }
 
@@ -121,21 +121,22 @@ function readMdFiles(mdFilesArray) {
   let contentArray = [];
   mdFilesArray.forEach((mdFile) => {
     let content = fs.readFileSync(mdFile, { encoding: 'utf8', flag: 'r' });
-    contentArray.push(content);
+    contentArray.push({content, filePath: mdFile});
   })
+  console.log(contentArray);
   return contentArray;
 }
 
-function getLinks(contentArray) {
+function getLinks(contentArray, filePath) {
   const linkRegex = /\[([^\]]+)\](\S+)/g; // Modified regex for link without parentheses
   const links = [];
 
-  for (const content of contentArray) {
+  for (const { content, filePath } of contentArray) {
     let match;
     while ((match = linkRegex.exec(content)) !== null) {
       const linkText = match[1];
       const linkURL = match[2];
-      links.push({ text: linkText, url: linkURL });
+      links.push({ text: linkText, href: linkURL, file: filePath });
     }
   }
 

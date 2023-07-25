@@ -6,7 +6,7 @@ const mdLinks  = require('./index.js')
 //   console.log(error);
 // })
 
-mdLinks('./mock-files/mock-folder').then(() => {
+mdLinks('./mock-files/mock.md').then(() => {
 
 }).catch((error) => {
   console.log(error);
