@@ -42,6 +42,7 @@ function pathIsAbsolute(givenPath) {
   let absolutePath;
   if (path.isAbsolute(givenPath)) {
     absolutePath = givenPath;
+    // mandar chalk al cli para tests
     console.log('Absolute path', chalk.underline(absolutePath))
   } else {
     absolutePath = path.resolve(givenPath);
@@ -178,5 +179,7 @@ function validateLinks(links){
   });
   return Promise.all(promises)
 }
+
+// truncar el texto a 50 caracteres 
 
 module.exports = mdLinks 
