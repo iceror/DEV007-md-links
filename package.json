@@ -1,5 +1,5 @@
 {
-  "name": "md-links-cli",
+  "name": "md-links",
   "version": "1.0.0",
   "description": "CLI tool that reads and analyzes files in .md format. It verifies the links contained in said files and returns stats about them",
   "main": "index.js",
