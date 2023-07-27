@@ -4,7 +4,6 @@ const path = require('path');
 const chalk = require("chalk");
 const axios = require('axios');
 
-//console.log(process.argv);
 const mdLinks = (givenPath, options) => {
   // mdLinks debe retornar una promesa
   return new Promise((resolve, reject) => {
@@ -34,7 +33,11 @@ const mdLinks = (givenPath, options) => {
 
     // resolve devolver un array con el archivo
     const links = getLinks(contentArray);
-    validateLinks(links);
+    validateLinks(links).then((result) => {
+      console.log('All validations complete', result);
+    }).catch((error) => {
+      console.log(error);
+    });
   });
 }
 
@@ -144,40 +147,62 @@ function getLinks(contentArray) {
   return links;
 }
 
-function validateLinks(links){
-  const promises = links.map((link) => {
-    return axios
-    .get(link.href)
-    .then((response) => {
-      const isValid = response.status >= 200 && response.status < 400;
+// function validateLinks(links) {
+//   const promises = links.map((link) => {
+//     return axios.get(link.href)
+//       .then((response) => console.log({
+//         href: link.href,
+//         text: link.text,
+//         file: link.file,
+//         status: response.status,
+//         ok: response.status >= 200 && response.status < 400 ? 'ok' : 'fail'
+//       }))
+//       .catch((error) => console.log({
+//         href: link.href,
+//         text: link.text,
+//         file: link.file,
+//         status: error.response ? error.response.status : null,
+//         ok: 'fail'
+//       }));
+//   });
+//   console.log(Promise.all(promises));
+//   return Promise.all(promises)
+// }
+
+const validateLinks = async (links) => {
+  const promises = links.map(async (link) => {
+    try {
+      const response = await axios.get(link.href);
       console.log({
-        ...link,
+        href: link.href,
+        text: link.text,
+        file: link.file,
         status: response.status,
-        ok: isValid ? 'ok' : 'fail'
+        ok: response.status >= 200 && response.status < 400 ? 'ok' : 'fail'
       });
       return {
         ...link,
         status: response.status,
-        ok: 'ok'
-      }
-    })
-    .catch((error) => {
-      console.log('ERROR', error.response);
-      if (error.response){
-        console.log(
-          {
-            ...link,
-            status: error.response.status
-          }
-        );
-        return {
-          ...link,
-          status: error.response.status
-        }
-      }
-    });
+        ok: response.status >= 200 && response.status < 400 ? 'ok' : 'fail'
+      };
+    } catch (error) {
+      console.log({
+        href: link.href,
+        text: link.text,
+        file: link.file,
+        status: error.response ? error.response.status : null,
+        ok: 'fail'
+      });
+      return {
+        ...link,
+        status: error.response ? error.response.status : null,
+        ok: 'fail'
+      };
+    }
   });
-  return Promise.all(promises)
+
+  const results = await Promise.all(promises);
+  return results;
 }
 
 // truncar el texto a 50 caracteres 
