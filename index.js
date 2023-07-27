@@ -147,28 +147,6 @@ function getLinks(contentArray) {
   return links;
 }
 
-// function validateLinks(links) {
-//   const promises = links.map((link) => {
-//     return axios.get(link.href)
-//       .then((response) => console.log({
-//         href: link.href,
-//         text: link.text,
-//         file: link.file,
-//         status: response.status,
-//         ok: response.status >= 200 && response.status < 400 ? 'ok' : 'fail'
-//       }))
-//       .catch((error) => console.log({
-//         href: link.href,
-//         text: link.text,
-//         file: link.file,
-//         status: error.response ? error.response.status : null,
-//         ok: 'fail'
-//       }));
-//   });
-//   console.log(Promise.all(promises));
-//   return Promise.all(promises)
-// }
-
 const validateLinks = async (links) => {
   const promises = links.map(async (link) => {
     try {
