@@ -79,3 +79,12 @@ function getFileExtension(filePath) {
     return false;
   }
 }
+
+module.exports = {
+  pathIsAbsolute,
+  pathExists,
+  pathIsDirectory,
+  getFilesInDirectory,
+  pathIsFile,
+  getFileExtension
+}

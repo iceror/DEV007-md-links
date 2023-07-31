@@ -35,3 +35,5 @@ const validateLinks = async (links) => {
   const results = await Promise.all(promises);
   return results;
 }
+
+module.exports = validateLinks;

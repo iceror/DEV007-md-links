@@ -26,3 +26,8 @@ function getLinks(contentArray) {
   console.log('Links:', links);
   return links;
 }
+
+module.exports = {
+  readMdFiles,
+  getLinks
+}
