@@ -6,6 +6,7 @@ const { pathIsAbsolute,
   getFileExtension } = require('./path-utils');
 const { readMdFiles, getLinks } = require('./read-md');
 const validateLinks = require('./validator');
+const stats = require('./stats')
 const chalk = require("chalk");
 
 const mdLinks = (givenPath, options) => {
@@ -41,11 +42,17 @@ const mdLinks = (givenPath, options) => {
 
     // resolve devolver un array con el archivo
     const links = getLinks(contentArray);
-    validateLinks(links).then((result) => {
-      console.log('All validations complete!', result);
-    }).catch((error) => {
-      console.log(error);
-    });
+
+    if (options.validate === true) {
+      validateLinks(links).then((result) => {
+        console.log('All validations complete!', result);
+      }).catch((error) => {
+        console.log(error);
+      });
+    } else {
+      console.log('Links:', links);
+
+    }
   });
 }
 
