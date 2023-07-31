@@ -51,7 +51,10 @@ const mdLinks = (givenPath, options) => {
       });
     } else {
       console.log('Links:', links);
+    }
 
+    if(options.stats === true ){
+      stats()
     }
   });
 }

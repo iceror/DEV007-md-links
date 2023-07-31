@@ -10,6 +10,12 @@ if(process.argv[3] === '--validate' || process.argv[4] === '--validate' ){
 } else {
   options.validate = false;
 }
+
+if(process.argv[3] === '--stats' || process.argv[4] === '--stats' ){
+  options.stats = true;
+} else {
+  options.stats = false;
+}
 //make cli executable with md-links command not with node cli.js
 mdLinks(process.argv[2], options).then(() => {
 
