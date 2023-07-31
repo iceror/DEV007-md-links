@@ -6,10 +6,10 @@ function pathIsAbsolute(givenPath) {
   if (path.isAbsolute(givenPath)) {
     absolutePath = givenPath;
     // mandar chalk al cli para tests
-    console.log('Absolute path', chalk.underline(absolutePath))
+    console.log('Absolute path', absolutePath)
   } else {
     absolutePath = path.resolve(givenPath);
-    console.log('Relative path', chalk.underline(absolutePath))
+    console.log('Relative path', absolutePath)
   }
   return absolutePath
 }
@@ -18,9 +18,7 @@ function pathExists(absolutePath) {
   let existingPath;
   if (fs.existsSync(absolutePath)) {
     existingPath = absolutePath;
-    console.log(chalk.bgGreen('Path exists!', chalk.underline(absolutePath)));
   } else {
-    //console.log((chalk.bgRed('ERROR path does not exist!', chalk.strikethrough(absolutePath))));
     return false
   }
   return existingPath;
@@ -30,8 +28,7 @@ function pathIsDirectory(existingPath) {
   let stats = fs.statSync(existingPath);
   if (stats.isDirectory()) {
     let directoryPath = existingPath;
-    console.log(chalk.green('Path is directory:', directoryPath));
-    return directoryPath
+    return directoryPath;
   }
 }
 
@@ -63,19 +60,14 @@ function pathIsFile(existingPath) {
   let stats = fs.statSync(existingPath);
   if (stats.isFile()) {
     let filePath = existingPath;
-    // console.log(chalk.redBright('Path is not directory:', filePath));
-    //función para obtener extensión
-    // getFileExtension(filePath);
     return filePath;
   }
 }
 
 function getFileExtension(filePath) {
   if (path.extname(filePath) === '.md') {
-    console.log(chalk.greenBright('File extension is .MD', filePath));
     return filePath;
   } else {
-    console.log(chalk.redBright('File extension is not .MD', filePath));
     return false;
   }
 }
