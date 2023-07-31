@@ -26,16 +26,21 @@ const mdLinks = (givenPath, options) => {
     }
     // check if path is directory 
     let directoryPath = pathIsDirectory(existingPath);
-    console.log(chalk.green('Path is directory:', directoryPath));
     // check if path is file
     let filePath = pathIsFile(existingPath);
 
     let mdFilesArray = [];
     let contentArray = [];
     if (filePath) {
-      mdFilesArray.push(getFileExtension(filePath));
-      contentArray = readMdFiles(mdFilesArray);
+      const mdFile = getFileExtension(filePath);
+      if (mdFile === true) {
+        mdFilesArray.push(mdFile);
+        contentArray = readMdFiles(mdFilesArray);
+      } else {
+        reject(chalk.bgRedBright('File is not .md'))
+      }
     } else if (directoryPath) {
+      console.log(chalk.green('Path is directory:', directoryPath));
       mdFilesArray = getFilesInDirectory(directoryPath);
       contentArray = readMdFiles(mdFilesArray)
     }
@@ -53,7 +58,7 @@ const mdLinks = (givenPath, options) => {
       console.log('Links:', links);
     }
 
-    if(options.stats === true ){
+    if (options.stats === true) {
       stats()
     }
   });
