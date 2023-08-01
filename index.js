@@ -20,7 +20,7 @@ const mdLinks = (givenPath, options) => {
     let existingPath = pathExists(absolutePath);
 
     if (!existingPath) {
-      reject(chalk.bgRed('ERROR path does not exist!'))
+      reject('ERROR path does not exist!')
     } else {
       console.log(chalk.bgGreenBright('Path exists!', chalk.underline(absolutePath)));
     }
@@ -37,7 +37,7 @@ const mdLinks = (givenPath, options) => {
         mdFilesArray.push(mdFile);
         contentArray = readMdFiles(mdFilesArray);
       } else {
-        reject(chalk.bgRed('File is not .md'));
+        reject('File is not .md');
       }
     } else if (directoryPath) {
       console.log(chalk.green('Path is directory:', directoryPath));
@@ -45,8 +45,10 @@ const mdLinks = (givenPath, options) => {
       contentArray = readMdFiles(mdFilesArray)
     }
 
-    // resolve devolver un array con el archivo
     const links = getLinks(contentArray);
+    if (links.length === 0) {
+      reject('ERROR no links found');
+    }
 
     if (options.stats === true && options.validate === true) {
       validateLinks(links).then((result) => {
