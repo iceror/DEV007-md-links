@@ -22,7 +22,7 @@ const mdLinks = (givenPath, options) => {
     if (!existingPath) {
       reject('ERROR path does not exist!')
     } else {
-      console.log(chalk.bgGreenBright('Path exists!', chalk.underline(absolutePath)));
+      console.log(chalk.bgGreen('Path exists!', chalk.underline(absolutePath)));
     }
     // check if path is directory 
     let directoryPath = pathIsDirectory(existingPath);
@@ -42,7 +42,7 @@ const mdLinks = (givenPath, options) => {
     } else if (directoryPath) {
       console.log(chalk.green('Path is directory:', directoryPath));
       mdFilesArray = getFilesInDirectory(directoryPath);
-      contentArray = readMdFiles(mdFilesArray)
+      contentArray = readMdFiles(mdFilesArray);
     }
 
     const links = getLinks(contentArray);
@@ -51,12 +51,12 @@ const mdLinks = (givenPath, options) => {
     }
 
     if (options.stats === true && options.validate === true) {
-      validateLinks(links).then((result) => {
+      resolve(validateLinks(links).then((result) => {
         stats(result);
         brokenLinks(result);
       }).catch((error) => {
         console.log(error);
-      });
+      }));
     } else if (options.validate === true) {
       validateLinks(links).then((result) => {
         console.log('All validations complete!', result);
@@ -74,7 +74,5 @@ const mdLinks = (givenPath, options) => {
     }
   });
 }
-
-// truncar el texto a 50 caracteres 
 
 module.exports = mdLinks 

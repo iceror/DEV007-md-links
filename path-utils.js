@@ -1,3 +1,4 @@
+const chalk = require('chalk');
 const fs = require('fs')
 const path = require('path');
 
@@ -6,10 +7,10 @@ function pathIsAbsolute(givenPath) {
   if (path.isAbsolute(givenPath)) {
     absolutePath = givenPath;
     // mandar chalk al cli para tests
-    console.log('Absolute path', absolutePath)
+    console.log(chalk.underline.cyan('Absolute path', absolutePath))
   } else {
     absolutePath = path.resolve(givenPath);
-    console.log('Relative path', absolutePath)
+    console.log(chalk.underline.cyan('Relative path', absolutePath))
   }
   return absolutePath
 }
