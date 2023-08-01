@@ -6,7 +6,7 @@ const { pathIsAbsolute,
   getFileExtension } = require('./path-utils');
 const { readMdFiles, getLinks } = require('./read-md');
 const validateLinks = require('./validator');
-const stats = require('./stats')
+const { stats, brokenLinks } = require('./stats')
 const chalk = require("chalk");
 
 const mdLinks = (givenPath, options) => {
@@ -22,7 +22,7 @@ const mdLinks = (givenPath, options) => {
     if (!existingPath) {
       reject(chalk.bgRed('ERROR path does not exist!'))
     } else {
-      console.log(chalk.bgGreen('Path exists!', chalk.underline(absolutePath)));
+      console.log(chalk.bgGreenBright('Path exists!', chalk.underline(absolutePath)));
     }
     // check if path is directory 
     let directoryPath = pathIsDirectory(existingPath);
@@ -33,11 +33,11 @@ const mdLinks = (givenPath, options) => {
     let contentArray = [];
     if (filePath) {
       const mdFile = getFileExtension(filePath);
-      if (mdFile === true) {
+      if (mdFile) {
         mdFilesArray.push(mdFile);
         contentArray = readMdFiles(mdFilesArray);
       } else {
-        reject(chalk.bgRedBright('File is not .md'))
+        reject(chalk.bgRed('File is not .md'))
       }
     } else if (directoryPath) {
       console.log(chalk.green('Path is directory:', directoryPath));
@@ -59,8 +59,22 @@ const mdLinks = (givenPath, options) => {
     }
 
     if (options.stats === true) {
-      stats()
+      validateLinks(links).then((result) => {
+        stats(result)
+      }).catch((error) => {
+        console.log(error);
+      });
     }
+
+    if (options.stats === true && options.validate === true) {
+      validateLinks(links).then((result) => {
+        stats(result);
+        brokenLinks(result);
+      }).catch((error) => {
+        console.log(error);
+      });
+    }
+
   });
 }
 
