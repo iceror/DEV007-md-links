@@ -11,9 +11,20 @@ describe('mdLinks', () => {
   // });
 
   it('should reject the promise when path is not valid', () => {
-    console.log(mdLinks);
     return mdLinks('/user/folder/path.md').catch((error) =>{
-      expect(error).toBe('ERROR path does not exist!')
+      expect(error).toEqual('ERROR path does not exist!')
+    })
+  })
+
+  it('should reject the promise when no .md files are found', () => {
+    return mdLinks('mock-files/mock.js').catch((error) =>{
+      expect(error).toEqual('File is not .md')
+    })
+  })
+
+  it('should reject the promise when no links are found', () => {
+    return mdLinks('mock-files/mock1.md').catch((error) =>{
+      expect(error).toEqual('ERROR no links found')
     })
   })
 
