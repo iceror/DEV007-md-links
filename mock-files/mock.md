@@ -1,5 +1,5 @@
 ##Text inside mock.md file
-[FRIC]https://www.fric1948asjncur295.com/
+[Very long link text to test character truncate to 50 characters, hope it works]https://www.fric1948asjncur295.com/
 [Google]https://www.googl.com/
 [Google]https://www.googl.com/
 [Google]https://www.google.com/

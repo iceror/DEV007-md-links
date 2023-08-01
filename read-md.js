@@ -11,7 +11,7 @@ function readMdFiles(mdFilesArray) {
 }
 
 function getLinks(contentArray) {
-  const linkRegex = /\[([^\]]+)\](\S+)/g; // Modified regex for link without parentheses
+  const linkRegex = /\[([^\]]+)\](\S+)/g;
   const links = [];
 
   for (const { content, filePath } of contentArray) {
@@ -19,7 +19,8 @@ function getLinks(contentArray) {
     while ((match = linkRegex.exec(content)) !== null) {
       const linkText = match[1];
       const linkURL = match[2];
-      links.push({ text: linkText, href: linkURL, file: filePath });
+
+      links.push({ text: linkText.length >= 50 ? linkText.substring(0,50) + '...' : linkText, href: linkURL, file: filePath });
     }
   }
 
