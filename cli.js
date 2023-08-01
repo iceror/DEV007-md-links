@@ -1,7 +1,7 @@
 #!/usr/bin/env node 
 const mdLinks  = require('./index.js')
 
-console.log(process.argv);
+// console.log(process.argv);
 // conditional to check if options are passed 
 const options = {};
 for (let i = 2; i < process.argv.length; i++) {
