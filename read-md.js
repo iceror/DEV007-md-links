@@ -6,7 +6,7 @@ function readMdFiles(mdFilesArray) {
     let content = fs.readFileSync(mdFile, { encoding: 'utf8', flag: 'r' });
     contentArray.push({ content, filePath: mdFile });
   })
-  console.log(contentArray);
+
   return contentArray;
 }
 
