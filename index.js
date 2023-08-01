@@ -10,11 +10,11 @@ const { stats, brokenLinks } = require('./stats')
 const chalk = require("chalk");
 
 const mdLinks = (givenPath, options) => {
-  // mdLinks debe retornar una promesa
+  // mdLinks should return a promise
   return new Promise((resolve, reject) => {
     // Verify if path is absolute. if relative, make it absolute
     let absolutePath = pathIsAbsolute(givenPath);
-    console.log('Path is ansolute: ', chalk.underline(absolutePath));
+    console.log('Absolute path: ', chalk.underline(absolutePath));
 
     // mdLinks should check if the path exists. if it doesn't exists, reject Promise
     let existingPath = pathExists(absolutePath);
@@ -37,7 +37,7 @@ const mdLinks = (givenPath, options) => {
         mdFilesArray.push(mdFile);
         contentArray = readMdFiles(mdFilesArray);
       } else {
-        reject(chalk.bgRed('File is not .md'))
+        reject(chalk.bgRed('File is not .md'));
       }
     } else if (directoryPath) {
       console.log(chalk.green('Path is directory:', directoryPath));
@@ -48,24 +48,6 @@ const mdLinks = (givenPath, options) => {
     // resolve devolver un array con el archivo
     const links = getLinks(contentArray);
 
-    if (options.validate === true) {
-      validateLinks(links).then((result) => {
-        console.log('All validations complete!', result);
-      }).catch((error) => {
-        console.log(error);
-      });
-    } else {
-      console.log('Links:', links);
-    }
-
-    if (options.stats === true) {
-      validateLinks(links).then((result) => {
-        stats(result)
-      }).catch((error) => {
-        console.log(error);
-      });
-    }
-
     if (options.stats === true && options.validate === true) {
       validateLinks(links).then((result) => {
         stats(result);
@@ -73,8 +55,21 @@ const mdLinks = (givenPath, options) => {
       }).catch((error) => {
         console.log(error);
       });
+    } else if (options.validate === true) {
+      validateLinks(links).then((result) => {
+        console.log('All validations complete!', result);
+      }).catch((error) => {
+        console.log(error);
+      });
+    } else if (options.stats === true) {
+      validateLinks(links).then((result) => {
+        stats(result);
+      }).catch((error) => {
+        console.log(error);
+      });
+    } else {
+      console.log('Links: ', links);
     }
-
   });
 }
 
