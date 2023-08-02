@@ -7,12 +7,12 @@ function pathIsAbsolute(givenPath) {
   if (path.isAbsolute(givenPath)) {
     absolutePath = givenPath;
     // mandar chalk al cli para tests
-    console.log(chalk.underline.cyan('Absolute path', absolutePath))
+    console.log(chalk.underline.cyan('Absolute path', absolutePath));
   } else {
     absolutePath = path.resolve(givenPath);
-    console.log(chalk.underline.cyan('Relative path', absolutePath))
+    console.log(chalk.underline.cyan('Relative path', absolutePath));
   }
-  return absolutePath
+  return absolutePath;
 }
 
 function pathExists(absolutePath) {
@@ -20,7 +20,7 @@ function pathExists(absolutePath) {
   if (fs.existsSync(absolutePath)) {
     existingPath = absolutePath;
   } else {
-    return false
+    return false;
   }
   return existingPath;
 }
@@ -42,7 +42,6 @@ function getFilesInDirectory(directoryPath) {
   let mdFilesArray = []
   filesInDirectory.forEach((file) => {
     const filePath = directoryPath + '/' + file;
-    // const notMdFilesArray = []
     if (pathIsFile(filePath)) {
       const extension = getFileExtension(filePath);
       if (extension) {
@@ -53,7 +52,6 @@ function getFilesInDirectory(directoryPath) {
       mdFilesArray = mdFilesArray.concat(mdFilesInSubdirectory);
     }
   })
-  // console.log('outside if', mdFilesArray);
   return mdFilesArray;
 }
 
