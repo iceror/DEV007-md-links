@@ -10,14 +10,19 @@
   },
   "rules": {
     "no-irregular-whitespace": 1,
-    "no-console": 1,
+    "no-console": 0,
     "semi": [
       "error",
       "always"
     ],
     "quotes": [
       "error",
-      "double"
-    ]
+      "single"
+    ],
+    "no-plusplus": 0,
+    "arrow-body-style": 0,
+    "no-use-before-define": 0,
+    "no-sequences": 0
+
   }
 }
