@@ -2,12 +2,14 @@
   "env": {
     "commonjs": true,
     "es2021": true,
-    "node": true
+    "node": true,
+    "jest/globals": true
   },
   "extends": "airbnb-base",
   "parserOptions": {
     "ecmaVersion": "latest"
   },
+  "plugins": ["jest"],
   "rules": {
     "no-irregular-whitespace": 1,
     "no-console": 0,
@@ -22,7 +24,8 @@
     "no-plusplus": 0,
     "arrow-body-style": 0,
     "no-use-before-define": 0,
-    "no-sequences": 0
-
+    "no-sequences": 0,
+    "no-restricted-syntax": 0,
+    "no-cond-assign": 0
   }
 }
