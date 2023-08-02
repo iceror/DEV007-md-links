@@ -31,7 +31,8 @@
   "homepage": "https://github.com/iceror/DEV007-md-links#readme",
   "dependencies": {
     "axios": "^1.4.0",
-    "chalk": "^4.1.2"
+    "chalk": "^4.1.2",
+    "eslint-plugin-jest": "^27.2.3"
   },
   "devDependencies": {
     "eslint": "^8.46.0",
