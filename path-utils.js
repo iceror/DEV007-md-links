@@ -1,4 +1,3 @@
-const chalk = require('chalk');
 const fs = require('fs')
 const path = require('path');
 
@@ -7,10 +6,10 @@ function pathIsAbsolute(givenPath) {
   if (path.isAbsolute(givenPath)) {
     absolutePath = givenPath;
     // mandar chalk al cli para tests
-    console.log(chalk.underline.cyan('Absolute path', absolutePath));
+    // console.log(chalk.underline.cyan('Absolute path', absolutePath));
   } else {
     absolutePath = path.resolve(givenPath);
-    console.log(chalk.underline.cyan('Relative path', absolutePath));
+    // console.log(chalk.underline.cyan('Relative path', absolutePath));
   }
   return absolutePath;
 }
@@ -36,7 +35,6 @@ function pathIsDirectory(existingPath) {
 function getFilesInDirectory(directoryPath) {
   // read files inside directory
   const filesInDirectory = fs.readdirSync(directoryPath)
-  console.log('Found this files in directory: ', filesInDirectory);
 
   // Find subdirectories
   let mdFilesArray = []
@@ -52,7 +50,7 @@ function getFilesInDirectory(directoryPath) {
       mdFilesArray = mdFilesArray.concat(mdFilesInSubdirectory);
     }
   })
-  return mdFilesArray;
+  return filesInDirectory ,mdFilesArray;
 }
 
 function pathIsFile(existingPath) {
