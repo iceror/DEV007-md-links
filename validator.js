@@ -7,19 +7,19 @@ const validateLinks = async (links) => {
       return {
         ...link,
         status: response.status,
-        ok: response.status >= 200 && response.status < 400 ? 'ok' : 'fail'
+        ok: response.status >= 200 && response.status < 400 ? 'ok' : 'fail',
       };
     } catch (error) {
       return {
         ...link,
         status: error.response ? error.response.status : null,
-        ok: 'fail'
+        ok: 'fail',
       };
     }
   });
 
   const results = await Promise.all(promises);
   return results;
-}
+};
 
 module.exports = validateLinks;

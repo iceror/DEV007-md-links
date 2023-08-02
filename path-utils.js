@@ -1,4 +1,4 @@
-const fs = require('fs')
+const fs = require('fs');
 const path = require('path');
 
 function pathIsAbsolute(givenPath) {
@@ -25,21 +25,22 @@ function pathExists(absolutePath) {
 }
 
 function pathIsDirectory(existingPath) {
-  let stats = fs.statSync(existingPath);
+  const stats = fs.statSync(existingPath);
+  let directoryPath;
   if (stats.isDirectory()) {
-    let directoryPath = existingPath;
-    return directoryPath;
+    directoryPath = existingPath;
   }
+  return directoryPath;
 }
 
 function getFilesInDirectory(directoryPath) {
   // read files inside directory
-  const filesInDirectory = fs.readdirSync(directoryPath)
+  const filesInDirectory = fs.readdirSync(directoryPath);
 
   // Find subdirectories
-  let mdFilesArray = []
+  let mdFilesArray = [];
   filesInDirectory.forEach((file) => {
-    const filePath = directoryPath + '/' + file;
+    const filePath = `${directoryPath}/${file}`;
     if (pathIsFile(filePath)) {
       const extension = getFileExtension(filePath);
       if (extension) {
@@ -49,24 +50,24 @@ function getFilesInDirectory(directoryPath) {
       const mdFilesInSubdirectory = getFilesInDirectory(filePath);
       mdFilesArray = mdFilesArray.concat(mdFilesInSubdirectory);
     }
-  })
-  return filesInDirectory ,mdFilesArray;
+  });
+  return filesInDirectory, mdFilesArray;
 }
 
 function pathIsFile(existingPath) {
-  let stats = fs.statSync(existingPath);
+  const stats = fs.statSync(existingPath);
+  let filePath;
   if (stats.isFile()) {
-    let filePath = existingPath;
-    return filePath;
+    filePath = existingPath;
   }
+  return filePath;
 }
 
 function getFileExtension(filePath) {
   if (path.extname(filePath) === '.md') {
     return filePath;
-  } else {
-    return false;
   }
+  return false;
 }
 
 module.exports = {
@@ -75,5 +76,5 @@ module.exports = {
   pathIsDirectory,
   getFilesInDirectory,
   pathIsFile,
-  getFileExtension
-}
+  getFileExtension,
+};

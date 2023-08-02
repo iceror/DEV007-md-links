@@ -1,9 +1,9 @@
-#!/usr/bin/env node 
-const mdLinks  = require('./index.js');
+#!/usr/bin/env node
 const chalk = require('chalk');
+const mdLinks = require('./index');
 
 // console.log(process.argv);
-// conditional to check if options are passed 
+// conditional to check if options are passed
 const options = {};
 for (let i = 2; i < process.argv.length; i++) {
   const arg = process.argv[i];

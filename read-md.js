@@ -1,11 +1,11 @@
 const fs = require('fs');
 
 function readMdFiles(mdFilesArray) {
-  let contentArray = [];
+  const contentArray = [];
   mdFilesArray.forEach((mdFile) => {
-    let content = fs.readFileSync(mdFile, { encoding: 'utf8', flag: 'r' });
+    const content = fs.readFileSync(mdFile, { encoding: 'utf8', flag: 'r' });
     contentArray.push({ content, filePath: mdFile });
-  })
+  });
 
   return contentArray;
 }
@@ -20,7 +20,7 @@ function getLinks(contentArray) {
       const linkText = match[1];
       const linkURL = match[2];
 
-      links.push({ text: linkText.length >= 50 ? linkText.substring(0,50) + '...' : linkText, href: linkURL, file: filePath });
+      links.push({ text: linkText.length >= 50 ? `${linkText.substring(0, 50)}...` : linkText, href: linkURL, file: filePath });
     }
   }
 
@@ -29,5 +29,5 @@ function getLinks(contentArray) {
 
 module.exports = {
   readMdFiles,
-  getLinks
-}
+  getLinks,
+};

@@ -1,8 +1,8 @@
 function stats(result) {
   // get Total and Unique links
-  let links = []
-  result.forEach(link => {
-    links.push(link.href)
+  const links = [];
+  result.forEach((link) => {
+    links.push(link.href);
   });
 
   const uniqueLinks = [];
@@ -22,19 +22,19 @@ function stats(result) {
 }
 
 function brokenLinks(result) {
-  let links = []
-  result.forEach(link => {
-    links.push(link.ok )
+  const links = [];
+  result.forEach((link) => {
+    links.push(link.ok);
   });
 
   const broken = [];
   for (let i = 0; i < links.length; i++) {
     const link = links[i];
     if (link === 'fail') {
-      broken.push(link)
+      broken.push(link);
     }
   }
-  console.log('Broken: ',broken.length);
+  console.log('Broken: ', broken.length);
 }
 
 module.exports = { stats, brokenLinks };

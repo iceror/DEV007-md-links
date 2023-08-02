@@ -1,33 +1,35 @@
-const { pathIsAbsolute,
+const chalk = require('chalk');
+const {
+  pathIsAbsolute,
   pathExists,
   pathIsDirectory,
   getFilesInDirectory,
   pathIsFile,
-  getFileExtension } = require('./path-utils');
+  getFileExtension,
+} = require('./path-utils');
 const { readMdFiles, getLinks } = require('./read-md');
 const validateLinks = require('./validator');
-const { stats, brokenLinks } = require('./stats')
-const chalk = require("chalk");
+const { stats, brokenLinks } = require('./stats');
 
 const mdLinks = (givenPath, options) => {
   // mdLinks should return a promise
   return new Promise((resolve, reject) => {
     // Verify if path is absolute. if relative, make it absolute
-    let absolutePath = pathIsAbsolute(givenPath);
+    const absolutePath = pathIsAbsolute(givenPath);
     console.log('Absolute path: ', chalk.underline(absolutePath));
 
     // mdLinks should check if the path exists. if it doesn't exists, reject Promise
-    let existingPath = pathExists(absolutePath);
+    const existingPath = pathExists(absolutePath);
 
     if (!existingPath) {
-      reject('ERROR path does not exist!')
+      reject(new Error('ERROR path does not exist!'));
     } else {
       console.log(chalk.bgGreen('Path exists!', chalk.underline(absolutePath)));
     }
-    // check if path is directory 
-    let directoryPath = pathIsDirectory(existingPath);
+    // check if path is directory
+    const directoryPath = pathIsDirectory(existingPath);
     // check if path is file
-    let filePath = pathIsFile(existingPath);
+    const filePath = pathIsFile(existingPath);
 
     let mdFilesArray = [];
     let contentArray = [];
@@ -37,7 +39,7 @@ const mdLinks = (givenPath, options) => {
         mdFilesArray.push(mdFile);
         contentArray = readMdFiles(mdFilesArray);
       } else {
-        reject('File is not .md');
+        reject(Error('File is not .md'));
       }
     } else if (directoryPath) {
       console.log(chalk.green('Path is directory:', directoryPath));
@@ -47,7 +49,7 @@ const mdLinks = (givenPath, options) => {
 
     const links = getLinks(contentArray);
     if (links.length === 0) {
-      reject('ERROR no links found');
+      reject(new Error('ERROR no links found'));
     }
 
     if (options.stats === true && options.validate === true) {
@@ -73,6 +75,6 @@ const mdLinks = (givenPath, options) => {
       console.log('Links: ', links);
     }
   });
-}
+};
 
-module.exports = mdLinks 
+module.exports = mdLinks;
