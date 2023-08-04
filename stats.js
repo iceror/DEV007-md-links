@@ -17,8 +17,10 @@ function stats(result) {
     }
   }
 
-  console.log('Total: ', result.length);
-  console.log('Unique: ', uniqueLinks.length);
+  const total = result.length;
+  const unique = uniqueLinks.length;
+  return { total, unique };
+
 }
 
 function brokenLinks(result) {
@@ -34,7 +36,8 @@ function brokenLinks(result) {
       broken.push(link);
     }
   }
-  console.log('Broken: ', broken.length);
+  const brokenLinks = broken.length;
+  return brokenLinks;
 }
 
 module.exports = { stats, brokenLinks };

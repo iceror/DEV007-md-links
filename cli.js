@@ -18,8 +18,11 @@ for (let i = 2; i < process.argv.length; i++) {
 mdLinks(process.argv[2], options).then((links) => {
   if (options.stats === true && options.validate === true) {
     validateLinks(links).then((result) => {
-      stats(result);
-      brokenLinks(result);
+      const statsResult = stats(result);
+      const brokenResult = brokenLinks(result);
+      console.log('Total: ', statsResult.total);
+      console.log('Unique: ', statsResult.unique);
+      console.log('Broken: ', brokenResult);
     }).catch((error) => {
       console.log(error);
     });
@@ -31,7 +34,9 @@ mdLinks(process.argv[2], options).then((links) => {
     });
   } else if (options.stats === true) {
     validateLinks(links).then((result) => {
-      stats(result);
+      const statsResult = stats(result);
+      console.log('Total: ', statsResult.total);
+      console.log('Unique: ', statsResult.unique);
     }).catch((error) => {
       console.log(error);
     });
