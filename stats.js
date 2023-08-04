@@ -20,7 +20,6 @@ function stats(result) {
   const total = result.length;
   const unique = uniqueLinks.length;
   return { total, unique };
-
 }
 
 function brokenLinks(result) {
@@ -36,8 +35,8 @@ function brokenLinks(result) {
       broken.push(link);
     }
   }
-  const brokenLinks = broken.length;
-  return brokenLinks;
+  const brokenLinksResult = broken.length;
+  return brokenLinksResult;
 }
 
 module.exports = { stats, brokenLinks };
