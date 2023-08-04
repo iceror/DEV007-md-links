@@ -15,11 +15,14 @@ for (let i = 2; i < process.argv.length; i++) {
   }
 }
 
-mdLinks(process.argv[2], options).then((links) => {
+const givenPath = process.argv[2]
+mdLinks(givenPath, options).then((links) => {
+
   if (options.stats === true && options.validate === true) {
     validateLinks(links).then((result) => {
       const statsResult = stats(result);
       const brokenResult = brokenLinks(result);
+      console.log('Statistics after validating links found in', chalk.underline.italic.whiteBright(givenPath), ':')
       console.log('Total: ', statsResult.total);
       console.log('Unique: ', statsResult.unique);
       console.log('Broken: ', brokenResult);
@@ -28,20 +31,21 @@ mdLinks(process.argv[2], options).then((links) => {
     });
   } else if (options.validate === true) {
     validateLinks(links).then((result) => {
-      console.log('All validations complete!', result);
+      console.log('All validations from', chalk.underline.italic.whiteBright(givenPath),'complete!', result);
     }).catch((error) => {
       console.log(error);
     });
   } else if (options.stats === true) {
     validateLinks(links).then((result) => {
       const statsResult = stats(result);
+      console.log('Statistics after validating links found in', chalk.underline.italic.whiteBright(givenPath), ':')
       console.log('Total: ', statsResult.total);
       console.log('Unique: ', statsResult.unique);
     }).catch((error) => {
       console.log(error);
     });
   } else {
-    console.log('Links: ', links);
+    console.log('Links found in' , chalk.underline.italic.whiteBright(givenPath), ': ', links);
   }
 }).catch((error) => {
   console.log(chalk.bgRed(error));
