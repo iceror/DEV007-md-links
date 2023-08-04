@@ -8,7 +8,7 @@ const {
 } = require('./path-utils');
 const { readMdFiles, getLinks } = require('./read-md');
 
-const mdLinks = (givenPath, options) => {
+const mdLinks = (givenPath) => {
   // mdLinks should return a promise
   return new Promise((resolve, reject) => {
     // Verify if path is absolute. if relative, make it absolute
@@ -52,7 +52,7 @@ const mdLinks = (givenPath, options) => {
     }
 
     const result = Promise.resolve(links);
-    resolve(result)
+    resolve(result);
   });
 };
 
