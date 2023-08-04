@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const axios = require('axios');
 const mdLinks = require('../index');
 const {
   pathIsAbsolute,
@@ -10,7 +11,7 @@ const {
   getFileExtension,
 } = require('../path-utils');
 const validateLinks = require('../validator');
-const stats = require('../stats');
+const { stats, brokenLinks } = require('../stats');
 
 describe('mdLinks', () => {
   it('should be a function', () => {
@@ -94,9 +95,9 @@ describe('pathIsDirectory', () => {
 
   it('should return the directory path if the path given is a directory', () => {
     const givenPath = '/Users/ilsecervantes/Documents/GitHub/DEV007-md-links/mock-files/mock-folder';
-    const stats = fs.statSync(givenPath);
+    const statsFs = fs.statSync(givenPath);
     let directoryPath;
-    if (stats.isDirectory()) {
+    if (statsFs.isDirectory()) {
       directoryPath = givenPath;
     }
     return expect(directoryPath).toBe(givenPath);
@@ -116,9 +117,9 @@ describe('pathIsFile', () => {
 
   it('should return the file path if the given path is a file', () => {
     const givenPath = '/Users/ilsecervantes/Documents/GitHub/DEV007-md-links/mock-files/mock-folder/mock-mock.md';
-    const stats = fs.statSync(givenPath);
+    const statsFs = fs.statSync(givenPath);
     let filePath;
-    if (stats.isFile()) {
+    if (statsFs.isFile()) {
       filePath = givenPath;
     }
     return expect(filePath).toBe(givenPath);
@@ -134,19 +135,144 @@ describe('getFileExtension', () => {
     const filePath = '/Users/ilsecervantes/Documents/GitHub/DEV007-md-links/mock-files/mock.md';
     const fileExtension = path.extname(filePath);
     let result;
-    if(fileExtension === '.md'){
+    if (fileExtension === '.md') {
       result = filePath;
     }
-    return expect(result).toBe(filePath)
+    return expect(result).toBe(filePath);
   });
 
   it('should return false if the file path is not .md', () => {
     const filePath = '/Users/ilsecervantes/Documents/GitHub/DEV007-md-links/mock-files/mock.js';
     const fileExtension = path.extname(filePath);
     let isMd;
-    if(fileExtension != '.md'){
+    if (fileExtension !== '.md') {
       isMd = false;
     }
     return expect(isMd).toBe(false);
-  })
+  });
+});
+
+jest.mock('axios');
+
+describe('validateLinks', () => {
+  beforeEach(() => {
+    axios.get.mockClear();
+  });
+
+  it('should be a function', () => {
+    expect(typeof validateLinks).toBe('function');
+  });
+
+  it('validates links and returns results', async () => {
+    const links = [
+      { href: 'https://example.com/link1' },
+      { href: 'https://example.com/link2' },
+    ];
+
+    const mockResponse = { status: 200 };
+    axios.get.mockResolvedValue(mockResponse);
+
+    const expectedResults = [
+      { href: 'https://example.com/link1', status: 200, ok: 'ok' },
+      { href: 'https://example.com/link2', status: 200, ok: 'ok' },
+    ];
+
+    const results = await validateLinks(links);
+
+    expect(results).toEqual(expectedResults);
+    expect(axios.get).toHaveBeenCalledTimes(2);
+    expect(axios.get).toHaveBeenCalledWith('https://example.com/link1');
+    expect(axios.get).toHaveBeenCalledWith('https://example.com/link2');
+  });
+
+  it('handles link validation error', async () => {
+    const links = [{ href: 'https://example.com/link1' }];
+
+    const mockError = new Error('Mock validation error');
+    axios.get.mockRejectedValue(mockError);
+
+    const expectedResults = [
+      { href: 'https://example.com/link1', status: null, ok: 'fail' },
+    ];
+
+    const results = await validateLinks(links);
+
+    expect(results).toEqual(expectedResults);
+    expect(axios.get).toHaveBeenCalledTimes(1);
+    expect(axios.get).toHaveBeenCalledWith('https://example.com/link1');
+  });
+
+  it('handles link validation success with status 200', async () => {
+    const links = [{ href: 'https://example.com/link1' }];
+
+    const mockResponse = { status: 200 };
+    axios.get.mockResolvedValue(mockResponse);
+
+    const expectedResults = [
+      { href: 'https://example.com/link1', status: 200, ok: 'ok' },
+    ];
+
+    const results = await validateLinks(links);
+
+    expect(results).toEqual(expectedResults);
+    expect(axios.get).toHaveBeenCalledTimes(1);
+    expect(axios.get).toHaveBeenCalledWith('https://example.com/link1');
+  });
+
+  it('handles link validation failure with status 404', async () => {
+    const links = [{ href: 'https://example.com/link1' }];
+
+    const mockResponse = { status: 404 };
+    axios.get.mockResolvedValue(mockResponse);
+
+    const expectedResults = [
+      { href: 'https://example.com/link1', status: 404, ok: 'fail' },
+    ];
+
+    const results = await validateLinks(links);
+
+    expect(results).toEqual(expectedResults);
+    expect(axios.get).toHaveBeenCalledTimes(1);
+    expect(axios.get).toHaveBeenCalledWith('https://example.com/link1');
+  });
+});
+
+describe('stats', () => {
+  it('should be a function', () => {
+    expect(typeof stats).toBe('function');
+  });
+
+  it('should return the total and unique links', () => {
+    const links = [
+      { href: 'https://www.googl.com/' },
+      { href: 'https://www.googl.com/' },
+      { href: 'https://www.google.com/' },
+      { href: 'https://www.example.com/' },
+    ];
+
+    const { total, unique } = stats(links);
+
+    expect(total).toBe(links.length);
+    expect(unique).toBe(3);
+  });
+});
+
+describe('brokenLinks', () => {
+  it('should be a function', () => {
+    expect(typeof brokenLinks).toBe('function');
+  });
+
+  it('calculates the number of broken links', () => {
+    const result = [
+      { ok: 'success' },
+      { ok: 'fail' },
+      { ok: 'success' },
+      { ok: 'fail' },
+      { ok: 'fail' },
+    ];
+
+    const resultCount = brokenLinks(result);
+
+    expect(resultCount).toBe(3); // Three broken links
+  });
 });
