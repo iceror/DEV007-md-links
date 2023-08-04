@@ -5,11 +5,8 @@ function pathIsAbsolute(givenPath) {
   let absolutePath;
   if (path.isAbsolute(givenPath)) {
     absolutePath = givenPath;
-    // mandar chalk al cli para tests
-    // console.log(chalk.underline.cyan('Absolute path', absolutePath));
   } else {
     absolutePath = path.resolve(givenPath);
-    // console.log(chalk.underline.cyan('Relative path', absolutePath));
   }
   return absolutePath;
 }
