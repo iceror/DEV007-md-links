@@ -1,11 +1,14 @@
 {
-  "name": "md-links",
+  "name": "md-links-iceror",
   "version": "1.0.0",
   "description": "CLI tool that reads and analyzes files in .md format. It verifies the links contained in said files and returns stats about them",
   "main": "index.js",
   "scripts": {
     "test": "jest --coverage",
     "eslint": "eslint --ext .js ./ test/"
+  },
+  "engines": {
+    "node": ">=16.x"
   },
   "repository": {
     "type": "git",
