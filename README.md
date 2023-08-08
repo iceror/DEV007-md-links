@@ -34,37 +34,37 @@ npm i md-links-iceror
 npx md-links ./ruta-de-tu-archivo
 
 #### Este comando retornará la siguiente información de los links encontrados:
-{
-  href: https://example-link.com,
-  text: Example Links,
-  file: ./ruta-del-archivo
-}
+{  
+  href: https://example-link.com,  
+  text: Example Links,  
+  file: ./ruta-del-archivo  
+}  
 
 ### Comando + flag --validate
 npx md-links ./ruta-de-tu-archivo --validate
 
 #### Este comando retornará la siguiente información de los links encontrados:
-{
-  href: https://example-link.com,
-  text: Example Links,
-  file: ./ruta-del-archivo,
-  status: 200 o null,
-  ok: ok o fail
-}
+{  
+  href: https://example-link.com,  
+  text: Example Links,  
+  file: ./ruta-del-archivo,  
+  status: 200 o null,  
+  ok: ok o fail  
+}  
 
 ### Comando + flag --stats
 npx md-links ./ruta-de-tu-archivo --stats
 
-#### Este comando retornará un total de links y una cuenta de los links únicos:
-Statistics after validating links found in ./archivos/archivo.md :
-Total:  5
-Unique:  3
+#### Este comando retornará un total de links y links únicos:
+Statistics after validating links found in ./archivos/archivo.md :  
+Total:  5  
+Unique:  3  
 
 ### Comando + flag --stats --validate 
 npx md-links ./ruta-de-tu-archivo --stats --validate
 
-#### Este comando retornará un total de links y una cuenta de los links únicos:
-Statistics after validating links found in ./archivos/archivo.md :
-Total:  5
-Unique:  3
-Broken:  3
+#### Este comando retornará un total de links, links únicos y links rotos:
+Statistics after validating links found in ./archivos/archivo.md :  
+Total:  5  
+Unique:  3  
+Broken:  3  
